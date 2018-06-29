@@ -1,0 +1,94 @@
+CREATE TABLE forma_pagamento (
+descricao varchar(150),
+idFormaPagamento int auto_increment PRIMARY KEY
+);
+
+CREATE TABLE status_venda (
+descricao varchar(150),
+idStatusVenda int auto_increment PRIMARY KEY
+);
+
+CREATE TABLE cliente_loja (
+nomeFantasia varchar(150),
+cnpj varchar(150),
+email varchar(150),
+razao_social varchar(150),
+telefone varchar(150),
+idCliente int  PRIMARY KEY
+);
+
+CREATE TABLE pedido (
+dataHora varchar(150),
+idPedido int auto_increment PRIMARY KEY,
+idFormaPagamento int auto_increment,
+idCliente int ,
+FOREIGN KEY(idFormaPagamento) REFERENCES forma_pagamento (idFormaPagamento),
+FOREIGN KEY(idCliente) REFERENCES cliente_loja (idCliente)
+);
+
+CREATE TABLE usuarios (
+telefone varchar(150),
+email varchar(150),
+senha varchar(150),
+nome varchar(150),
+idUsuarios int auto_increment PRIMARY KEY
+);
+
+CREATE TABLE vendedor (
+cpf varchar(150),
+idUsuarios int auto_increment,
+FOREIGN KEY(idUsuarios) REFERENCES usuarios (idUsuarios)
+);
+
+CREATE TABLE produtos (
+preco varchar(150),
+estoque_min int ,
+descricao varchar(150),
+estoque int ,
+idProdutos int auto_increment PRIMARY KEY,
+cor varchar(150),
+idTipoProduto int auto_increment
+);
+
+CREATE TABLE tipo_produto (
+tipo varchar(150),
+idTipoProduto int auto_increment PRIMARY KEY
+);
+
+CREATE TABLE Tamanho (
+tamanho varchar(5),
+idTamanho int auto_increment PRIMARY KEY
+);
+
+CREATE TABLE administrador (
+razao_social varchar(150),
+cnpj varchar(150),
+idUsuarios int auto_increment,
+FOREIGN KEY(idUsuarios) REFERENCES usuarios (idUsuarios)
+);
+
+CREATE TABLE status_venda_pedido (
+idPedido int auto_increment,
+idStatusVenda int auto_increment,
+data_hora varchar(150),
+FOREIGN KEY(idPedido) REFERENCES pedido (idPedido),
+FOREIGN KEY(idStatusVenda) REFERENCES status_venda (idStatusVenda)
+);
+
+CREATE TABLE prod_tamanho (
+idTamanho int auto_increment,
+idProdutos int auto_increment,
+FOREIGN KEY(idTamanho) REFERENCES Tamanho (idTamanho),
+FOREIGN KEY(idProdutos) REFERENCES produtos (idProdutos)
+);
+
+CREATE TABLE vendas_produto (
+idPedido int auto_increment,
+idProdutos int auto_increment,
+preco_negociado varchar(10),
+quantidade int ,
+FOREIGN KEY(idPedido) REFERENCES pedido (idPedido),
+FOREIGN KEY(idProdutos) REFERENCES produtos (idProdutos)
+);
+
+ALTER TABLE produtos ADD FOREIGN KEY(idTipoProduto) REFERENCES tipo_produto (idTipoProduto);
